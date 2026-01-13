@@ -1,2 +1,2 @@
 # QUMA
-QUMAを利用したMiseq結果の解析ツール
+QUMAを利用した解析ツール
