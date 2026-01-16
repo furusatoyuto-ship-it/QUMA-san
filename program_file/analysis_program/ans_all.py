@@ -46,10 +46,10 @@ def run_blast(genome_files, query_file):
 """
 
 # settingファイルのパスを指定
-setting_file_path = './setting.xlsx'
+setting_file_path = './setting.csv'
 
 # オプションデータを読み込む
-df = pd.read_excel(setting_file_path)
+df = pd.read_csv(setting_file_path)
 
 # バイサルファイト処理前のファイル名を取得
 b2_value = df.iloc[0, 1]

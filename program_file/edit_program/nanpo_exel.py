@@ -59,8 +59,11 @@ for folder in folders:
         else:
             methylation_rate = count_M / count__MU * 100
         # excluded率を求める
-        excluded_rate = count_excluded / num_rows * 100
-
+        if num_rows == 0:
+            excluded_rate = 0
+        else:
+            excluded_rate = count_excluded / num_rows * 100
+            
         #data_fileにデータを入れる
         sheet[f'B{number}'] = folder
         sheet[f'B{number+1}'] = "データ数"

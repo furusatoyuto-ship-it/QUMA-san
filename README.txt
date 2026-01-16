@@ -20,7 +20,7 @@ $docker build -t quma .
 
 #DockerimageからDockercontenaを作成
 
-$docker run -d -v %cd%:/QUMA --name quma quma
+$docker run -d -v $(pwd):/QUMA --name quma quma
 
 
 #実行中のコンテナを検索

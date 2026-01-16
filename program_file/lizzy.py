@@ -35,7 +35,7 @@ def process_tsv_file(file_path, writer):
         # 行数チェック
         if len(lines) < end_line:
             print(f"⚠ {file_path} は行数が足りないためスキップしました")
-            continue
+            return
 
         # 1行目にfile_pathを書き込み
         writer.writerow([file_path])
