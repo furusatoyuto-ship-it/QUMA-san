@@ -30,7 +30,7 @@ tsv_files.sort()
 
 output_file = "./output/merged_output.csv" # 出力CSVファイル名
 start_line = 14                   # 抽出開始行（1始まり）
-end_line = 22                     # 抽出終了行（1始まり）
+end_line = 20                     # 抽出終了行（1始まり）
 
 # tsvファイルを処理して指定行をcsvに書き込む関数
 def process_tsv_file(file_path, writer):

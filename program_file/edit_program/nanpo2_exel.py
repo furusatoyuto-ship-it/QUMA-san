@@ -32,6 +32,9 @@ def get_specific_files_recursively(target_file_name):
 
 excel_files = get_specific_files_recursively('analysis.xlsx')
 
+# ファイル名でソート(番号順に処理)
+excel_files.sort()
+
 # すべてのフォルダーでループさせる
 for file_path in excel_files:
     print(" ")

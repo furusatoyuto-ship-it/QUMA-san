@@ -24,8 +24,8 @@ subprocess.run(["python","./program_file/photo_program/stats.py"])
 #エクセルファイルを編集
 print("sort_exel.py start")
 subprocess.run(["python","./program_file/edit_program/sort_exel.py"])
-print("nanpo_exel.py start")
-subprocess.run(["python","./program_file/edit_program/nanpo_exel.py"])
+print("nanpo2_exel.py start")
+subprocess.run(["python","./program_file/edit_program/nanpo2_exel.py"])
 print("processing_exel.py start")
 subprocess.run(["python","./program_file/edit_program/processing_exel.py"])
 

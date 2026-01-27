@@ -18,6 +18,9 @@ for root, dirs, files in os.walk(analysis_directory_path):
         if file == 'photo.xlsx':
             excel_files.append(os.path.join(root, file))
 
+# ファイル名でソート(番号順に処理)
+excel_files.sort()  
+    
 # 新しいExcelワークブックを作成
 output_excel_path = './output/photo_data.xlsx'
 with pd.ExcelWriter(output_excel_path, engine='openpyxl') as writer:

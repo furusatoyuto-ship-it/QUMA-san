@@ -45,6 +45,9 @@ analysis_directory_path = './output'
 # ディレクトリ内のすべてのフォルダーを取得
 folders = [f for f in os.listdir(analysis_directory_path) if os.path.isdir(os.path.join(analysis_directory_path, f))]
 
+# ファイル名でソート(番号順に処理)
+folders.sort()
+
 # すべてのフォルダーでループさせる
 for folder in folders:
     if not folder == "output_log":
