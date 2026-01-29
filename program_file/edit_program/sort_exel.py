@@ -78,5 +78,4 @@ for folder in folders:
             sorted_df.columns = [f"位置{i+1}" for i in range(sorted_df.shape[1])]
             #変更を保存
             sorted_df.to_excel(file_path, index=False, engine='openpyxl')
-
-print("ソートが完了しました。")
+            print(folder, "のエクセルファイルを並べ替えました")

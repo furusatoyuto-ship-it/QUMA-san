@@ -17,8 +17,6 @@ for folder in folders:
 
     if not folder == "output_log":
 
-
-
         #解析するディレクトリパスを指定
         file_path = ('./output/' + folder + '/detail/output_file3.tsv')
         #print(folder)
@@ -35,7 +33,7 @@ for folder in folders:
         old_char_U = "U"
         new_char_U = "○"
 
-
+    
         # 上記で定義した文字を置換
         selected_column = selected_column.str.replace(old_char_M, new_char_M)
         selected_column = selected_column.str.replace(old_char_U, new_char_U)
@@ -49,5 +47,5 @@ for folder in folders:
         #print(df_selected)
 
         # 抽出した列を新しいTXTファイルに保存する（エンコーディングを指定）
-        last_file_path = ('./output/' + folder + '/alalysis.txt')
+        last_file_path = ('./output/' + folder + '/analysis.txt')
         df_selected.to_csv(last_file_path, index=False, encoding='utf-8')

@@ -20,17 +20,16 @@ def get_specific_files_recursively(target_file_name):
         for file in files:
             if file == target_file_name:
                 get_files.append(os.path.join(root, file))
+    # ファイル名でソート(番号順に処理)
+    get_files.sort()
     return get_files
 
 # tsvファイルを再帰的に取得する
 tsv_files = get_specific_files_recursively('output_file3.tsv')
 
-# ファイル名でソート(番号順に処理)
-tsv_files.sort()
-
 output_file = "./output/merged_output.csv" # 出力CSVファイル名
 start_line = 14                   # 抽出開始行（1始まり）
-end_line = 20                     # 抽出終了行（1始まり）
+end_line = 18                     # 抽出終了行（1始まり）
 
 # tsvファイルを処理して指定行をcsvに書き込む関数
 def process_tsv_file(file_path, writer):

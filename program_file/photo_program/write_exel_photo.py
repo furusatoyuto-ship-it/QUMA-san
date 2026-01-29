@@ -5,21 +5,24 @@ import os
 
 # 解析済みのファイルを取得
 analysis_directory_path = './output'
-# 除外するフォルダのセット
-exclude_folders = {'output_log'}
+exclude_folders = {'output_log'}  # 除外するフォルダのセット
 
-# 特定のファイルを再帰的に取得（例：.xlsxファイル）
-excel_files = []
-for root, dirs, files in os.walk(analysis_directory_path):
-    # 除外するフォルダをスキップ
-    dirs[:] = [d for d in dirs if d not in exclude_folders]
+# 特定のファイルを再帰的に取得していく関数
+def get_specific_files_recursively(target_file_name):
+    get_files = []
+    for root, dirs, files in os.walk(analysis_directory_path):
+        # 除外するフォルダをスキップ
+        dirs[:] = [d for d in dirs if d not in exclude_folders]
+        # ファイルをリスト内に取得
+        for file in files:
+            if file == target_file_name:
+                get_files.append(os.path.join(root, file))
+    # ファイル名でソート(番号順に処理)
+    get_files.sort()
+    return get_files
 
-    for file in files:
-        if file == 'photo.xlsx':
-            excel_files.append(os.path.join(root, file))
-
-# ファイル名でソート(番号順に処理)
-excel_files.sort()  
+# Excelファイルを再帰的に取得する
+excel_files = get_specific_files_recursively('photo_data.xlsx')
     
 # 新しいExcelワークブックを作成
 output_excel_path = './output/photo_data.xlsx'
