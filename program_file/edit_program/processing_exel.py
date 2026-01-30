@@ -24,7 +24,7 @@ def add_function(sheet, value_name):
     sheet.cell(row=1, column=new_column_idx, value=value_name)
 
 # 特定のセルに関数を挿入する
-def add_graph(add_name, add_column):
+def add_graph(sheet, add_name, add_column):
     #入れたい列記号（ex.A,B)を取得
     column_letter = get_column_letter(add_column)
     #入れたい行番号を指定
@@ -39,20 +39,32 @@ def add_graph(add_name, add_column):
         }
     sheet[f'{column_letter}{row_number+1}'] = add_function[add_name]
 
-
 # 解析済みのファイルを取得
 analysis_directory_path = './output'
-# ディレクトリ内のすべてのフォルダーを取得
-folders = [f for f in os.listdir(analysis_directory_path) if os.path.isdir(os.path.join(analysis_directory_path, f))]
+exclude_folders = {'output_log'}  # 除外するフォルダのセット
 
-# ファイル名でソート(番号順に処理)
-folders.sort()
+# 特定のファイルを再帰的に取得していく関数
+def get_specific_files_recursively(target_file_name):
+    get_files = []
+    for root, dirs, files in os.walk(analysis_directory_path):
+        # 除外するフォルダをスキップ
+        dirs[:] = [d for d in dirs if d not in exclude_folders]
+        # ファイルをリスト内に取得
+        for file in files:
+            if file == target_file_name:
+                get_files.append(os.path.join(root, file))
+    # ファイル名でソート(番号順に処理)
+    get_files.sort()
+    return get_files
 
-# すべてのフォルダーでループさせる
-for folder in folders:
-    if not folder == "output_log":
-        # 解析するディレクトリパスを指定
-        file_path = ('./output/' + folder + '/analysis.xlsx')
+# エクセルファイルを再帰的に取得する
+xlsx_files = get_specific_files_recursively('analysis.xlsx')
+
+if not xlsx_files:
+    print("⚠ analysis.xlsx ファイルが見つかりませんでした。")
+    exit()
+else:
+    for file_path in xlsx_files:
         # エクセルファイルを読み込む
         workbook = load_workbook(file_path)
         sheet = workbook.active
@@ -67,13 +79,13 @@ for folder in folders:
         last_column = sheet.max_column
 
         #使用した実験の件数を最後の列から２列横に挿入
-        add_graph("all", last_column+2)
+        add_graph(sheet, "all", last_column+2)
 
         #使用できる実験の件数を最後の列から３列横に挿入
-        add_graph("used", last_column+3)
+        add_graph(sheet, "used", last_column+3)
 
         #excludedの件数を最後の列から４列横に挿入
-        add_graph("excluded", last_column+4)
+        add_graph(sheet, "excluded", last_column+4)
 
         # 変更をエクセルファイルに保存する
         workbook.save(file_path)
