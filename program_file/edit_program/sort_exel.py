@@ -3,15 +3,32 @@ import os
 
 # 解析済みのファイルを取得
 analysis_directory_path = './output'
+exclude_folders = {'output_log'}  # 除外するフォルダのセット
 
-# ディレクトリ内のすべてのフォルダーを取得
-folders = [f for f in os.listdir(analysis_directory_path) if os.path.isdir(os.path.join(analysis_directory_path, f))]
+# 特定のファイルを再帰的に取得していく関数
+def get_specific_files_recursively(target_file_name):
+    get_files = []
+    for root, dirs, files in os.walk(analysis_directory_path):
+        # 除外するフォルダをスキップ
+        dirs[:] = [d for d in dirs if d not in exclude_folders]
+        # ファイルをリスト内に取得
+        for file in files:
+            if file == target_file_name:
+                get_files.append(os.path.join(root, file))
+    # ファイル名でソート(番号順に処理)
+    get_files.sort()
+    return get_files
 
-# すべてのフォルダーでループ
-for folder in folders:
-    if not folder == "output_log":
-        # 解析するファイルパスを指定
-        file_path = os.path.join(analysis_directory_path, folder, 'analysis.xlsx')
+# エクセルファイルを再帰的に取得する
+xlsx_files = get_specific_files_recursively('analysis.xlsx')
+
+# プログラムの本処理
+if not xlsx_files:
+    print("⚠ analysis.xlsx ファイルが見つかりませんでした。")
+    exit()
+else:
+    for file_path in xlsx_files:
+        # エクセルファイルを読み込む
         df = pd.read_excel(file_path)
 
         # 新しいデータフレームを作成
@@ -68,7 +85,7 @@ for folder in folders:
                 new_df = pd.concat([new_df, pd.DataFrame([new_row])], ignore_index=True)    
 
         if new_df.empty:
-            print(folder, "のデータフレームは空です")
+            print(file_path, "のデータフレームは空です")
         else:
             # スコアをもとにデータフレームを並べ替え
             sorted_df = new_df.sort_values(by=new_df.columns[-1], ascending=False).reset_index(drop=True)
@@ -78,4 +95,4 @@ for folder in folders:
             sorted_df.columns = [f"位置{i+1}" for i in range(sorted_df.shape[1])]
             #変更を保存
             sorted_df.to_excel(file_path, index=False, engine='openpyxl')
-            print(folder, "のエクセルファイルを並べ替えました")
+            print(file_path, "のエクセルファイルを並べ替えました")

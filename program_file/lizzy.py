@@ -7,8 +7,7 @@ import csv
 
 # 解析済みのファイルを取得
 analysis_directory_path = './output'
-# 除外するフォルダのセット
-exclude_folders = {'output_log'}
+exclude_folders = {'output_log'}  # 除外するフォルダのセット
 
 # 特定のファイルを再帰的に取得していく関数
 def get_specific_files_recursively(target_file_name):
