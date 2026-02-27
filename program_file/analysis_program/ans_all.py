@@ -21,6 +21,12 @@ print("バイサルファイト処理前のファイルは" + genomic_name)
 genomic_data = "./input/genomic/" + genomic_name  # バイサルファイト処理前の配列
 output_file_path = "./output/output_file.txt"
 
+# 末尾で判定する対応表
+genomic_map_by_suffix = {
+    "b6.fasta": "./input/genomic/b6_genomic.fasta",
+    "jf1.fasta": "./input/genomic/jf1_genomic.fasta",
+}
+
 # bisulfiteフォルダを指定し、フォルダ内のすべてのfastaファイルを取得する
 bisulfite_folder = "./input/bisulfite/"  # バイサルファイト処理後の配列
 bisulfite_files = [os.path.join(bisulfite_folder, f) for f in os.listdir(bisulfite_folder) if f.endswith('.fasta')]
@@ -91,12 +97,20 @@ def command_def(genomic_data_sample, bisulfite_data_sample):
 # bisulfite_dataの数だけ繰り返す
 for bisulfite_data in bisulfite_files:
     print("バイサルファイト処理後のファイルは" + bisulfite_data)
+
+        # 末尾一致でgenomicを切り替え
+    bisulfite_basename = os.path.basename(bisulfite_data)
+    genomic_data_for_file = genomic_data
+    for suffix, gpath in genomic_map_by_suffix.items():
+        if bisulfite_basename.endswith(suffix):
+            genomic_data_for_file = gpath
+            break
+
     #解析番号を付与
     #masss = [0, 1, 2, 3]
     masss = [3]
     for mass in masss:
-        command, output_file_path = command_def(genomic_data, bisulfite_data)
-
+        command, output_file_path = command_def(genomic_data_for_file, bisulfite_data)
 
         # QUMAコマンドを実行し、出力をファイルにリダイレクト
         with open(output_file_path, "w") as output_file:
