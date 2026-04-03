@@ -93,12 +93,17 @@ def command_def(genomic_data_sample, bisulfite_data_sample):
 
     return command_sample, output_file_path_sample
 
+bisulfitebb, ext = os.path.splitext(genomic_name)
 
 # bisulfite_dataの数だけ繰り返す
 for bisulfite_data in bisulfite_files:
+    #  特定の文字 を含まないファイルをスキップ
+    if bisulfitebb not in bisulfite_data:
+        continue
+        
     print("バイサルファイト処理後のファイルは" + bisulfite_data)
 
-        # 末尾一致でgenomicを切り替え
+    # 末尾一致でgenomicを切り替え
     bisulfite_basename = os.path.basename(bisulfite_data)
     genomic_data_for_file = genomic_data
     for suffix, gpath in genomic_map_by_suffix.items():

@@ -22,7 +22,7 @@ def get_specific_files_recursively(target_file_name):
     return get_files
 
 # Excelファイルを再帰的に取得する
-excel_files = get_specific_files_recursively('photo_data.xlsx')
+excel_files = get_specific_files_recursively('photo.xlsx')
     
 # 新しいExcelワークブックを作成
 output_excel_path = './output/photo_data.xlsx'

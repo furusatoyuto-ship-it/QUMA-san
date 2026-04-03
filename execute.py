@@ -1,10 +1,40 @@
 import subprocess
 from datetime import datetime
+import sys
 
 # 現在の時間を出力
 current_time_s = datetime.now()
 print("解析開始時間:", current_time_s)
 
+programs = [
+    #前回の記録を行う
+    ["python", "./program_file/analysis_program/log.py"],
+    #QUMAを使い解析
+    ["python", "./program_file/analysis_program/ans_all.py"],
+    #メチル化を〇に置換
+    ["python", "./program_file/MU_program/MUex_txt.py"],
+    ["python", "./program_file/MU_program/MUex_xlsx.py"],
+    #写真解析
+    ["python", "./program_file/photo_program/stats.py"],
+    #エクセルファイルを編集
+    ["python", "./program_file/edit_program/sort_exel.py"],
+    ["python", "./program_file/edit_program/nanpo2_exel.py"],
+    ["python", "./program_file/edit_program/processing_exel.py"],
+    #エクセルファイルを一つにまとめる
+    ["python", "./program_file/write_exel.py"],
+    ["python", "./program_file/photo_program/write_exel_photo.py"],
+    ["python", "./program_file/lizzy.py"]
+]
+
+for program in programs:
+    print(f"{program[1]} start")
+    try:
+        subprocess.run(program, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred while running {program[1]}: {e}")
+        sys.exit(1)  # エラーが発生した場合はプログラムを終了
+
+"""
 #前回の記録を行う
 print("log.py start")
 subprocess.run(["python","./program_file/analysis_program/log.py"])
@@ -36,7 +66,7 @@ print("write_exel_photo.py start")
 subprocess.run(["python","./program_file/photo_program/write_exel_photo.py"])
 print("lizzy.py start")
 subprocess.run(["python","./program_file/lizzy.py"])
-
+"""
 
 # 現在の時間を出力
 print("解析開始時間:", current_time_s)
