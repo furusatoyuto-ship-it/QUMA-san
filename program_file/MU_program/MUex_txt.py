@@ -19,7 +19,6 @@ for folder in folders:
 
         #解析するディレクトリパスを指定
         file_path = ('./output/' + folder + '/detail/output_file3.tsv')
-        #print(folder)
 
         # TSVファイルを読み込む（エンコーディングを指定）
         df = pd.read_csv(file_path, sep='\t', skiprows=24, encoding='utf-8')

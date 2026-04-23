@@ -15,16 +15,20 @@ df = pd.read_csv(setting_file_path)
 # バイサルファイト処理前のファイル名を取得
 b2_value = df.iloc[0, 1]
 genomic_name = str(b2_value)
-print("バイサルファイト処理前のファイルは" + genomic_name)
 
-# 入力ファイルと出力ファイルを指定
-genomic_data = "./input/genomic/" + genomic_name  # バイサルファイト処理前の配列
+print(genomic_name + "を解析します")
+
+# 出力ファイルを指定
 output_file_path = "./output/output_file.txt"
+
+# 対応するゲノムのファイル名を取得
+genomic_maternal_name = df.iloc[7, 1]
+genomic_paternal_name = df.iloc[8, 1]
 
 # 末尾で判定する対応表
 genomic_map_by_suffix = {
-    "b6.fasta": "./input/genomic/b6_genomic.fasta",
-    "jf1.fasta": "./input/genomic/jf1_genomic.fasta",
+    "B6.fasta": "./input/genomic/" + genomic_maternal_name,
+    "JF1.fasta": "./input/genomic/" + genomic_paternal_name,
 }
 
 # bisulfiteフォルダを指定し、フォルダ内のすべてのfastaファイルを取得する
@@ -93,34 +97,37 @@ def command_def(genomic_data_sample, bisulfite_data_sample):
 
     return command_sample, output_file_path_sample
 
-bisulfitebb, ext = os.path.splitext(genomic_name)
+# genomic_nameから拡張子を除いた部分を取得
+target_bisulfite_file, ext = os.path.splitext(genomic_name)
 
 # bisulfite_dataの数だけ繰り返す
-for bisulfite_data in bisulfite_files:
+for bisulfite_file in bisulfite_files:
     #  特定の文字 を含まないファイルをスキップ
-    if bisulfitebb not in bisulfite_data:
+    if target_bisulfite_file not in bisulfite_file:
         continue
         
-    print("バイサルファイト処理後のファイルは" + bisulfite_data)
+    print("バイサルファイト処理後のファイルは" + bisulfite_file)
 
     # 末尾一致でgenomicを切り替え
-    bisulfite_basename = os.path.basename(bisulfite_data)
-    genomic_data_for_file = genomic_data
+    bisulfite_basename = os.path.basename(bisulfite_file)
+    genomic_data_for_file = None
     for suffix, gpath in genomic_map_by_suffix.items():
         if bisulfite_basename.endswith(suffix):
             genomic_data_for_file = gpath
             break
 
+    print("対応するゲノム配列は" + str(genomic_data_for_file))
+
     #解析番号を付与
     #masss = [0, 1, 2, 3]
     masss = [3]
     for mass in masss:
-        command, output_file_path = command_def(genomic_data_for_file, bisulfite_data)
+        command, output_file_path = command_def(genomic_data_for_file, bisulfite_file)
 
         # QUMAコマンドを実行し、出力をファイルにリダイレクト
         with open(output_file_path, "w") as output_file:
             subprocess.run(command, stdout=output_file, check=True)
         
         #どのファイルのどの解析が終わったかをプリント
-        print(f"analysis_complete {bisulfite_data}-{mass}")
+        print(f"analysis_complete {bisulfite_file}-{mass}")
     print("")
