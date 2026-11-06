@@ -41,8 +41,14 @@ RUN conda config --set channel_priority strict && \
     conda install -y blast && \
     conda clean --all -y
 
-# pandasとopenpyxlをインストール
+# pandasとopenpyxl、fastq-tools、seqtkをインストール
 RUN pip install pandas openpyxl
+RUN conda install -c bioconda fastq-tools && \
+    conda install -c bioconda fqgrep && \
+    conda install -c bioconda seqtk
+
+# NGSデータの整形に必要なパッケージのインストール
+RUN conda install -c bioconda pear
 
 # 必要なPerlモジュールをインストール
 RUN cpanm Statistics::Lite
@@ -53,4 +59,3 @@ RUN tar -xzf /QUMA/quma_cui-1.0.0.tar.gz -C /opt && rm /QUMA/quma_cui-1.0.0.tar.
 
 # コンテナ起動時に実行するコマンドを指定
 CMD ["tail", "-f", "/dev/null"]
-
