@@ -13,7 +13,7 @@ setting_file_path = './setting.csv'
 df = pd.read_csv(setting_file_path)
 
 # バイサルファイト処理前のファイル名を取得
-b2_value = df.iloc[0, 1]
+b2_value = df.iloc[0, 1] + ".fasta"
 genomic_name = str(b2_value)
 
 print(genomic_name + "を解析します")
@@ -22,8 +22,12 @@ print(genomic_name + "を解析します")
 output_file_path = "./output/output_file.txt"
 
 # 対応するゲノムのファイル名を取得
-genomic_maternal_name = df.iloc[7, 1]
-genomic_paternal_name = df.iloc[8, 1]
+genomic_maternal_name = df.iloc[0, 1] + "_B6.fasta"
+genomic_paternal_name = df.iloc[0, 1] + "_JF1.fasta"
+
+# 母名、父名が正常になっているかを確認
+print("母名は" + genomic_maternal_name)
+print("父名は" + genomic_paternal_name)
 
 # 末尾で判定する対応表
 genomic_map_by_suffix = {
@@ -119,7 +123,7 @@ for bisulfite_file in bisulfite_files:
     print("対応するゲノム配列は" + str(genomic_data_for_file))
 
     #解析番号を付与
-    #masss = [0, 1, 2, 3]
+    # masss = [0, 1, 2, 3]
     masss = [3]
     for mass in masss:
         command, output_file_path = command_def(genomic_data_for_file, bisulfite_file)

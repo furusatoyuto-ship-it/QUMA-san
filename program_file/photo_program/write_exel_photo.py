@@ -27,16 +27,20 @@ excel_files = get_specific_files_recursively('photo.xlsx')
 # 新しいExcelワークブックを作成
 output_excel_path = './output/photo_data.xlsx'
 with pd.ExcelWriter(output_excel_path, engine='openpyxl') as writer:
-    # 各ファイルを処理
-    for file_path in excel_files:
-        # ファイル名をシート名として使用
-        sheet_name = os.path.basename(os.path.dirname(file_path))
-    
-        # ファイルの内容を読み込む
-        df = pd.read_excel(file_path)
+    if excel_files:
+        # 各ファイルを処理
+        for file_path in excel_files:
+            # ファイル名をシート名として使用
+            sheet_name = os.path.basename(os.path.dirname(file_path))
         
-        # データフレームの内容を新しいシートに書き込む
-        df.to_excel(writer, sheet_name=sheet_name, index=False)
+            # ファイルの内容を読み込む
+            df = pd.read_excel(file_path)
+            
+            # データフレームの内容を新しいシートに書き込む
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+    else:
+        # データフレームが空の場合の処理
+        pd.DataFrame({"message": ["出力対象のデータがありません"]}).to_excel(writer, sheet_name="結果", index=False)
 
 # openpyxlで新しいExcelファイルを開く
 wb = openpyxl.load_workbook(output_excel_path)

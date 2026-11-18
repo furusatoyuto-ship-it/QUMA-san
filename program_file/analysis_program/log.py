@@ -1,31 +1,35 @@
 import os
 from datetime import datetime
 import shutil
+import pathlib as Path
 
-# 現在の時間を出力
-log_time = datetime.now()
 
-# log_time_sを文字列に変換
-log_time_str = log_time.strftime("%Y-%m-%d_%H-%M-%S")
+def run(output_dir):
+    # outputフォルダを作成する。すでに存在する場合は何もしない
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-# output_logに移動してフォルダを作って戻ってくる
-output_log_folder = "./output/output_log/"
-if not os.path.exists(output_log_folder):
-    os.makedirs(output_log_folder)
-log_time_dir = os.path.join(output_log_folder, log_time_str)
-if not os.path.exists(log_time_dir):
-    os.makedirs(log_time_dir)
+    # output_logフォルダ以外のファイル・フォルダを前回の解析結果として取得する
+    existing_item = [item for item in output_dir.iterdir() if item.name != "output_log"]
+    if not existing_item:
+        print("前回の解析結果はありません。")
+        return None
 
-# outputフォルダを指定し、フォルダ内のすべてのファイルを取得する
-output_folder = "./output/"
-output_files_and_folders = [os.path.join(output_folder, f) for f in os.listdir(output_folder) if f != "output_log"]
+    # 現在時刻から保存先を作る
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S_%f")
+    log_dir = output_dir / "output_log" / timestamp
+    log_dir.mkdir(parents=True)
 
-# ファイルとフォルダをコピー
-for item in output_files_and_folders:
-    destination = os.path.join(log_time_dir, os.path.basename(item))
-    try:
-        shutil.move(item,destination)
-        print(f" {item} を移動しました。")
-        
-    except Exception as e:
-        print(f"エラー: {item} を移動できませんでした。理由: {e}")
+
+    # ファイルとフォルダをコピー
+    for item in existing_item:
+        destination = log_dir / item.name
+        try:
+            shutil.move(item,destination)
+            print(f" {item} を移動しました。") 
+        except Exception as e:
+            print(f"エラー: {item} を移動できませんでした。理由: {e}")
+    
+    return log_dir
+
+# 前回の解析結果を保存する
+run(Path.Path("./output"))
