@@ -16,12 +16,12 @@ def run_programs():
         ["python", "./program_file/photo_program/stats.py"],
         #エクセルファイルを編集
         ["python", "./program_file/edit_program/sort_exel.py"],
-        ["python", "./program_file/edit_program/nanpo2_exel.py"],
+        ["python", "./program_file/edit_program/summarize_data_file.py"],
         ["python", "./program_file/edit_program/processing_exel.py"],
         #エクセルファイルを一つにまとめる
         ["python", "./program_file/write_exel.py"],
         ["python", "./program_file/photo_program/write_exel_photo.py"],
-        ["python", "./program_file/lizzy.py"]
+        ["python", "./program_file/summarize_csv.py"]
     ]
 
     for program in programs:

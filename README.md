@@ -24,7 +24,7 @@ QUMAsan/
     ├── edit_program/               # Excelの並べ替え・集計・数式追加
     ├── photo_program/              # 表示用Excel作成・統合
     ├── write_exel.py               # サンプルごとの解析Excelを統合
-    └── lizzy.py                    # QUMAの要約行をCSVに抽出
+    └── summarize_csv.py                    # QUMAの要約行をCSVに抽出
 ```
 
 `output/` は解析開始時に自動作成されます。同梱のFASTAは、動作確認用の人工配列です。
